@@ -2,6 +2,9 @@
 import { render } from "solid-js/web";
 import { Router } from "solid-app-router";
 
+// Import bulma as side effect
+import "bulma";
+
 import App from "./App";
 
 render(

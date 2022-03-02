@@ -7,11 +7,13 @@
     "preview": "npx vite preview --port 8080"
   },
   "devDependencies": {
+    "sass": "^1.49.9",
     "typescript": "^4.5.5",
     "vite": "^2.8.0",
     "vite-plugin-solid": "^2.2.5"
   },
   "dependencies": {
+    "bulma": "^0.9.3",
     "solid-app-router": "^0.3.0",
     "solid-js": "^1.3.7"
   }
