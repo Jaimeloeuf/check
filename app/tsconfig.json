@@ -9,10 +9,6 @@
   "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
 
   "compilerOptions": {
-    "paths": {
-      "@domain-model": ["../server/src/domain/index.ts"]
-    },
-
     // @todo Remove someday
     // @vue/tsconfig sets moduleResolution to use bundler,
     // however that is not compatible with all the libraries right now,
@@ -29,7 +25,7 @@
       "DOM.Iterable",
 
       // Should target at least ES2017 to support `Object.values`
-      "ES2017"
+      "ES2022"
     ],
 
     "alwaysStrict": true,                             /* Ensure 'use strict' is always emitted. */
