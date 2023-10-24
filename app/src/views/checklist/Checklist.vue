@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { nextTick, onMounted } from "vue";
+import { ref, nextTick, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import draggable from "vuedraggable";
 import { useChecklist, useSettings, useLoader } from "../../store";
 import { AllChecklistRoute } from "../../router";
 import BackButton from "../components/BackButton.vue";
@@ -15,6 +16,8 @@ const loader = useLoader();
 
 const checklist = await checklistStore.get(props.checklistID);
 
+const itemElements = ref<Array<HTMLInputElement>>([]);
+
 const vFocusIfNoItems = {
   mounted(el: HTMLElement) {
     nextTick(() => {
@@ -24,14 +27,6 @@ const vFocusIfNoItems = {
           (el as HTMLInputElement).select();
         }
       });
-    });
-  },
-};
-
-const vFocusOnCreate = {
-  mounted(el: HTMLElement) {
-    nextTick(() => {
-      el.focus();
     });
   },
 };
@@ -48,8 +43,26 @@ async function deleteChecklist() {
   loader.hide();
 }
 
-async function createItem() {
-  checklist.items.push({ title: "", done: false });
+async function createItem(index?: number) {
+  if (index !== undefined) {
+    checklist.items.splice(index + 1, 0, { title: "", done: false });
+
+    // wait for DOM update to apply for HTML Element reference to be stored into
+    // `itemElements` ref, then the newly created item element can be accessed
+    // to set focus on it.
+    await nextTick();
+
+    itemElements.value[index + 1]?.focus();
+  } else {
+    checklist.items.push({ title: "", done: false });
+
+    // wait for DOM update to apply for HTML Element reference to be stored into
+    // `itemElements` ref, then the newly created item element can be accessed
+    // to set focus on it.
+    await nextTick();
+
+    itemElements.value[itemElements.value.length - 1]?.focus();
+  }
 }
 
 async function toggleItem(index: number) {
@@ -106,33 +119,35 @@ function allDone() {
       </button>
     </div>
 
-    <div class="flex flex-col gap-3">
-      <div
-        v-for="(item, i) in checklist.items"
-        :key="i"
-        class="rounded-lg border border-zinc-200 p-3"
-        :class="{
-          'cursor-pointer bg-zinc-100 font-light text-zinc-700': item.done,
-        }"
-        v-on="{ click: item.done ? () => toggleItem(i) : null }"
-      >
-        <div class="flex flex-row items-center justify-between">
-          <span class="pr-2">{{ i + 1 }}.</span>
+    <draggable v-model="checklist.items" group="people" item-key="id">
+      <template #item="{ element: item, index }">
+        <div class="pb-3">
+          <div
+            class="rounded-lg border border-zinc-200 p-3"
+            :class="{
+              'cursor-pointer bg-zinc-100 font-light text-zinc-700': item.done,
+            }"
+            v-on="{ click: item.done ? () => toggleItem(index) : null }"
+          >
+            <div class="flex flex-row items-center justify-between">
+              <span class="pr-2">{{ index + 1 }}.</span>
 
-          <input
-            v-focus-on-create
-            v-model="item.title"
-            class="mr-2 flex-grow bg-inherit text-lg focus:outline-none"
-            :class="{ 'cursor-pointer': item.done }"
-            @keydown.enter="createItem()"
-            :readonly="item.done"
-          />
-          <button @click.prevent="toggleItem(i)">
-            {{ item.done ? "undo" : "done" }}
-          </button>
+              <input
+                :ref="(el) => (itemElements[index] = el as HTMLInputElement)"
+                v-model="item.title"
+                class="mr-2 flex-grow bg-inherit text-lg focus:outline-none"
+                :class="{ 'cursor-pointer': item.done }"
+                @keydown.enter="createItem(index)"
+                :readonly="item.done"
+              />
+              <button @click.prevent="toggleItem(index)">
+                {{ item.done ? "undo" : "done" }}
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </template>
+    </draggable>
 
     <!-- To allow scrolling past the FAB -->
     <div class="pt-20"></div>
