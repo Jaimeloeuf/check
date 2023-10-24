@@ -3,8 +3,8 @@ import type { RouteObject } from "./RouteTypes";
 import {
   HomeRoute,
   DebugRoute,
-  FeedbackRoute,
-  FeedbackSubmittedRoute,
+  AllChecklistRoute,
+  ChecklistRoute,
 } from "./PublicRoutes";
 
 /**
@@ -19,8 +19,8 @@ export const Routes = (<const>[
   /* Public Routes */
   HomeRoute,
   DebugRoute,
-  FeedbackRoute,
-  FeedbackSubmittedRoute,
+  AllChecklistRoute,
+  ChecklistRoute,
 
   // `satisfies` operator is used to typecheck all RouteObjects to ensure
   // that the AuthRequirements field is defined in the meta field.

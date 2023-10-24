@@ -1,5 +1,3 @@
-import type { RouteLocationNormalized } from "vue-router";
-
 export const NotFoundRoute = <const>{
   path: "/:pathMatch(.*)*",
   name: "404",
@@ -18,18 +16,15 @@ export const DebugRoute = <const>{
   component: () => import("../views/core/Debug.vue"),
 };
 
-export const FeedbackRoute = <const>{
-  name: "feedback",
-  path: "/feedback/:formID",
-  props: (route: RouteLocationNormalized) => ({
-    ...route.params,
-    ...route.query,
-  }),
-  component: () => import("../views/Feedback/Feedback.vue"),
+export const AllChecklistRoute = <const>{
+  name: "checklist-all",
+  path: "/checklist/all",
+  component: () => import("../views/checklist/AllChecklist.vue"),
 };
 
-export const FeedbackSubmittedRoute = <const>{
-  name: "feedback-submitted",
-  path: "/feedback-submitted",
-  component: () => import("../views/Feedback/Submitted.vue"),
+export const ChecklistRoute = <const>{
+  name: "checklist",
+  path: "/checklist/view/:checklistID",
+  props: true,
+  component: () => import("../views/checklist/Checklist.vue"),
 };
