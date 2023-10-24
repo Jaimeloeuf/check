@@ -2,6 +2,7 @@
 import { useRouter } from "vue-router";
 import { useChecklist, useSettings, useLoader } from "../../store";
 import { ChecklistRoute } from "../../router";
+import SideDrawerButton from "../components/SideDrawerButton.vue";
 import type { ChecklistID } from "../../types";
 
 const router = useRouter();
@@ -25,12 +26,9 @@ async function deleteChecklist(checklistID: ChecklistID) {
 
 <template>
   <div :class="{ 'mx-auto max-w-6xl': !settings.expandFull }">
-    <div class="flex flex-row items-center justify-between pb-6">
-      <p class="text-2xl">Checklists</p>
-
-      <button class="rounded-lg border border-zinc-200 p-3" @click="create()">
-        Create
-      </button>
+    <div class="mb-6 flex flex-row items-center border-b pb-4">
+      <SideDrawerButton />
+      <span class="ml-2 text-2xl">Checklists</span>
     </div>
 
     <div class="flex flex-col gap-3">

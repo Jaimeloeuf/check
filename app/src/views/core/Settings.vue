@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useSettings } from "../../store";
+import SideDrawerButton from "../components/SideDrawerButton.vue";
 
 const settings = useSettings();
 </script>
@@ -7,6 +8,7 @@ const settings = useSettings();
 <template>
   <div :class="{ 'mx-auto max-w-6xl': !settings.expandFull }">
     <div class="mb-6 flex flex-row items-center border-b pb-4">
+      <SideDrawerButton />
       <span class="ml-2 text-2xl">Settings</span>
     </div>
 
@@ -14,7 +16,10 @@ const settings = useSettings();
       <p class="text-lg">Expand checklist UI fully on wide screens</p>
 
       <div class="text-right">
-        <button @click="settings.expandFull = !settings.expandFull">
+        <button
+          class="rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-1 text-zinc-700"
+          @click="settings.expandFull = !settings.expandFull"
+        >
           {{ settings.expandFull ? "Narrow" : "Expand" }}
         </button>
       </div>
