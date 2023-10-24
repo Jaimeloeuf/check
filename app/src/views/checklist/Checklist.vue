@@ -65,6 +65,17 @@ async function createItem(index?: number) {
   }
 }
 
+/** Delete item if it is empty and user pressed backspace on it */
+async function deleteIfEmpty(index: number, $event: Event) {
+  if (checklist.items[index]?.title === "") {
+    // Prevents newly focused item from getting the backspace key event and
+    // getting a character deleted.
+    $event.preventDefault();
+    checklist.items.splice(index, 1);
+    itemElements.value[index - 1]?.focus();
+  }
+}
+
 async function toggleItem(index: number) {
   const item = checklist.items[index];
   if (item === undefined)
@@ -138,6 +149,7 @@ function allDone() {
                 class="mr-2 flex-grow bg-inherit text-lg focus:outline-none"
                 :class="{ 'cursor-pointer': item.done }"
                 @keydown.enter="createItem(index)"
+                @keydown.backspace="($event) => deleteIfEmpty(index, $event)"
                 :readonly="item.done"
               />
               <button @click.prevent="toggleItem(index)">

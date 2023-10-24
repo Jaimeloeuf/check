@@ -15,12 +15,6 @@ const gitVersion =
 // https://vitejs.dev/config/
 // https://vitejs.dev/config/#conditional-config
 export default defineConfig({
-  resolve: {
-    alias: {
-      "@domain-model": path.resolve(__dirname, "../server/src/domain/index.ts"),
-    },
-  },
-
   plugins: [
     vue(),
 
