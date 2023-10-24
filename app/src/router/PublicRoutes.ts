@@ -28,3 +28,9 @@ export const ChecklistRoute = <const>{
   props: true,
   component: () => import("../views/checklist/Checklist.vue"),
 };
+
+export const SettingsRoute = <const>{
+  name: "settings",
+  path: "/settings",
+  component: () => import("../views/core/Settings.vue"),
+};

@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import { useChecklist, useLoader } from "../../store";
+import { useChecklist, useSettings, useLoader } from "../../store";
 import { ChecklistRoute } from "../../router";
 import type { ChecklistID } from "../../types";
 
 const router = useRouter();
 const checklistStore = useChecklist();
+const settings = useSettings();
 const loader = useLoader();
 
 async function create() {
@@ -23,8 +24,7 @@ async function deleteChecklist(checklistID: ChecklistID) {
 </script>
 
 <template>
-  <!-- @todo Have a setting to allow them to expand to full width -->
-  <div class="mx-auto max-w-6xl">
+  <div :class="{ 'mx-auto max-w-6xl': !settings.expandFull }">
     <div class="flex flex-row items-center justify-between pb-6">
       <p class="text-2xl">Checklists</p>
 

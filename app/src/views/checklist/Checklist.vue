@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { nextTick, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { useChecklist, useLoader } from "../../store";
+import { useChecklist, useSettings, useLoader } from "../../store";
 import { AllChecklistRoute } from "../../router";
 import BackButton from "../components/BackButton.vue";
 import type { ChecklistID } from "../../types";
@@ -10,6 +10,7 @@ const props = defineProps<{ checklistID: ChecklistID }>();
 
 const router = useRouter();
 const checklistStore = useChecklist();
+const settings = useSettings();
 const loader = useLoader();
 
 const checklist = await checklistStore.get(props.checklistID);
@@ -72,8 +73,7 @@ function allDone() {
 </script>
 
 <template>
-  <!-- @todo Have a setting to allow them to expand to full width -->
-  <div class="mx-auto max-w-6xl">
+  <div :class="{ 'mx-auto max-w-6xl': !settings.expandFull }">
     <div class="flex flex-row items-center justify-between pb-6">
       <BackButton />
 
