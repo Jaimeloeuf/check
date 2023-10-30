@@ -22,10 +22,6 @@ async function backup() {
       <button class="rounded-lg border border-zinc-200 p-3" @click="backup">
         Generate and download backup file
       </button>
-
-      <button class="rounded-lg border border-zinc-200 p-3" @click="backup">
-        Import backup file
-      </button>
     </div>
   </div>
 </template>

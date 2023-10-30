@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, nextTick, onMounted } from "vue";
+import { ref, nextTick } from "vue";
 import { useRouter } from "vue-router";
 import draggable from "vuedraggable";
 import { useChecklist, useSettings, useLoader } from "../../store";
@@ -31,12 +31,8 @@ const vFocusIfNoItems = {
   },
 };
 
-// Hack get rid of focusing on the last items element
-onMounted(() =>
-  nextTick(() => (document.activeElement as HTMLElement)?.blur())
-);
-
 async function deleteChecklist() {
+  if (!confirm("Delete?")) return;
   loader.show();
   await checklistStore.delete(props.checklistID);
   router.push({ name: AllChecklistRoute.name });
@@ -90,7 +86,12 @@ function resetChecklist() {
   checklist.items.forEach((item) => (item.done = false));
 }
 
-function allDone() {
+async function allDone() {
+  // Wait for the DOM update to happen first before checking and asking user if
+  // they want to reset all the items. `nextTick` doesnt wait till UI update
+  // completes before this runs, so using this to queue until the next loop.
+  await new Promise((res) => setTimeout(res));
+
   if (checklist.items.every((item) => item.done))
     if (confirm("All completed! Reset checklist?")) resetChecklist();
 }
@@ -107,30 +108,30 @@ function allDone() {
         class="ml-3 flex-grow px-1 text-2xl focus:outline-none"
         v-focus-if-no-items
       />
-
-      <button
-        class="rounded-lg border border-red-300 p-2 text-red-600"
-        @click="deleteChecklist()"
-      >
-        delete
-      </button>
     </div>
 
     <div class="flex flex-row items-center justify-between pb-6">
-      <p class="text-2xl font-extralight tracking-tighter">
+      <p class="flex-grow text-2xl font-extralight tracking-tighter">
         {{ checklist.items.filter((item) => item.done).length }} /
         {{ checklist.items.length }}
       </p>
 
       <button
-        class="rounded-lg border border-zinc-200 p-2 text-zinc-600"
+        class="mr-3 rounded-lg border border-red-300 p-1 text-red-400"
+        @click="deleteChecklist()"
+      >
+        delete
+      </button>
+
+      <button
+        class="rounded-lg border border-zinc-200 px-3 py-1 text-zinc-600"
         @click="resetChecklist()"
       >
         reset
       </button>
     </div>
 
-    <draggable v-model="checklist.items" group="people" item-key="id">
+    <draggable v-model="checklist.items" group="checklist" item-key="id">
       <template #item="{ element: item, index }">
         <div class="pb-3">
           <div
@@ -143,6 +144,7 @@ function allDone() {
             <div class="flex flex-row items-center justify-between">
               <span class="pr-2">{{ index + 1 }}.</span>
 
+              <!-- @todo make this into a text area that grows bigger as you type -->
               <input
                 :ref="(el) => (itemElements[index] = el as HTMLInputElement)"
                 v-model="item.title"

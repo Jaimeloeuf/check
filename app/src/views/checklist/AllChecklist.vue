@@ -18,6 +18,7 @@ async function create() {
 }
 
 async function deleteChecklist(checklistID: ChecklistID) {
+  if (!confirm("Delete?")) return;
   loader.show();
   await checklistStore.delete(checklistID);
   loader.hide();

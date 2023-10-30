@@ -11,6 +11,7 @@ import {
   BackupRoute,
   ImportRoute,
   SettingsRoute,
+  NotFoundRoute,
 } from "./PublicRoutes";
 
 /**
@@ -33,6 +34,9 @@ export const Routes = (<const>[
   BackupRoute,
   ImportRoute,
   SettingsRoute,
+
+  /* This uses wildcard pattern therefore it should be the last route. */
+  NotFoundRoute,
 
   // `satisfies` operator is used to typecheck all RouteObjects to ensure
   // that the AuthRequirements field is defined in the meta field.

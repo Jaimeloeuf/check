@@ -1,8 +1,8 @@
 import { defineConfig } from "vite";
-import path from "path";
 
 import vue from "@vitejs/plugin-vue";
 import basicSSL from "@vitejs/plugin-basic-ssl";
+import { VitePWA } from "vite-plugin-pwa";
 
 import childProcess from "child_process";
 
@@ -22,6 +22,13 @@ export default defineConfig({
     // https://vitejs.dev/config/server-options.html#server-https
     // https://vitejs.dev/guide/migration.html#automatic-https-certificate-generation
     basicSSL(),
+
+    VitePWA({
+      // Allow PWA to be tested in development mode
+      devOptions: { enabled: true },
+      registerType: "autoUpdate",
+      manifest: { name: "Check" },
+    }),
   ],
 
   // Replace these strings with the appropriate values during build time
