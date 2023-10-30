@@ -29,6 +29,18 @@ export const ChecklistRoute = <const>{
   component: () => import("../views/checklist/Checklist.vue"),
 };
 
+export const BackupRoute = <const>{
+  name: "backup",
+  path: "/backup",
+  component: () => import("../views/Backup.vue"),
+};
+
+export const ImportRoute = <const>{
+  name: "import",
+  path: "/import",
+  component: () => import("../views/Import.vue"),
+};
+
 export const SettingsRoute = <const>{
   name: "settings",
   path: "/settings",

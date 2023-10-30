@@ -8,7 +8,7 @@ export interface Checklist {
 
   items: Array<{
     title: string;
-    done: boolean;
+    done?: boolean;
   }>;
 }
 

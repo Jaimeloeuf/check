@@ -5,6 +5,8 @@ import {
   DebugRoute,
   AllChecklistRoute,
   ChecklistRoute,
+  BackupRoute,
+  ImportRoute,
   SettingsRoute,
 } from "./PublicRoutes";
 
@@ -22,6 +24,8 @@ export const Routes = (<const>[
   DebugRoute,
   AllChecklistRoute,
   ChecklistRoute,
+  BackupRoute,
+  ImportRoute,
   SettingsRoute,
 
   // `satisfies` operator is used to typecheck all RouteObjects to ensure

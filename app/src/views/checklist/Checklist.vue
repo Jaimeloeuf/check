@@ -81,7 +81,7 @@ async function toggleItem(index: number) {
   if (item === undefined)
     throw new Error(`Invalid item index to mark as done: ${index}`);
 
-  item.done = !item.done;
+  item.done = item.done === undefined ? true : !item.done;
 
   allDone();
 }
