@@ -29,6 +29,26 @@ export const ChecklistRoute = <const>{
   component: () => import("../views/checklist/Checklist.vue"),
 };
 
+export const AllGroupRoute = <const>{
+  name: "group-all",
+  path: "/checklist/group/all",
+  component: () => import("../views/group/AllGroup.vue"),
+};
+
+export const GroupRoute = <const>{
+  name: "group",
+  path: "/checklist/group/view/:groupID",
+  props: true,
+  component: () => import("../views/group/Group.vue"),
+};
+
+export const GroupChecklistPickerRoute = <const>{
+  name: "group-picker",
+  path: "/checklist/group/picker/:groupID",
+  props: true,
+  component: () => import("../views/group/GroupChecklistPicker.vue"),
+};
+
 export const BackupRoute = <const>{
   name: "backup",
   path: "/backup",

@@ -2,6 +2,7 @@
 import { useRoute } from "vue-router";
 import {
   AllChecklistRoute,
+  AllGroupRoute,
   BackupRoute,
   ImportRoute,
   SettingsRoute,
@@ -44,6 +45,22 @@ const drawer = useSidedrawer();
             class="h-6 w-6"
           />
           <span class="ml-3 flex-1 text-left">Checklists</span>
+        </router-link>
+
+        <router-link
+          :to="{ name: AllGroupRoute.name }"
+          class="group flex w-full rounded-lg p-2 text-zinc-900"
+          :class="{
+            'border border-zinc-200 bg-zinc-50':
+              route.name === AllGroupRoute.name,
+          }"
+          @click="drawer.hide"
+        >
+          <img
+            src="../../assets/SideDrawerIcon/Checklist.svg"
+            class="h-6 w-6"
+          />
+          <span class="ml-3 flex-1 text-left">Groups</span>
         </router-link>
 
         <router-link
