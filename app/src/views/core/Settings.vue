@@ -1,17 +1,14 @@
 <script setup lang="ts">
 import { useSettings } from "../../store";
-import SideDrawerButton from "../components/SideDrawerButton.vue";
+import TopNavbar from "../components/TopNavbar.vue";
 
 const settings = useSettings();
 </script>
 
 <template>
-  <div :class="{ 'mx-auto max-w-6xl': !settings.expandFull }">
-    <div class="mb-6 flex flex-row items-center border-b pb-4">
-      <SideDrawerButton />
-      <span class="ml-2 text-2xl">Settings</span>
-    </div>
+  <TopNavbar sideDrawer>Settings</TopNavbar>
 
+  <div :class="{ 'mx-auto max-w-6xl': !settings.expandFull }">
     <div class="rounded-lg border border-zinc-200 p-4">
       <p class="text-lg">Expand checklist UI fully on wide screens</p>
 

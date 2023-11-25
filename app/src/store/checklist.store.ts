@@ -19,6 +19,12 @@ interface State {
 export const useChecklist = defineStore("checklist", {
   state: (): State => ({ checklists: {} }),
 
+  getters: {
+    checklistsArray: (state) => {
+      return Object.values(state.checklists);
+    },
+  },
+
   actions: {
     async create(): Promise<ChecklistID> {
       const id = ulid();

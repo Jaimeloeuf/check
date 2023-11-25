@@ -2,7 +2,7 @@
 import { useRouter } from "vue-router";
 import { useChecklist, useSettings, useLoader } from "../../store";
 import { ChecklistRoute } from "../../router";
-import SideDrawerButton from "../components/SideDrawerButton.vue";
+import TopNavbar from "../components/TopNavbar.vue";
 import type { ChecklistID } from "../../types";
 
 const router = useRouter();
@@ -26,13 +26,17 @@ async function deleteChecklist(checklistID: ChecklistID) {
 </script>
 
 <template>
-  <div :class="{ 'mx-auto max-w-6xl': !settings.expandFull }">
-    <div class="mb-6 flex flex-row items-center border-b pb-4">
-      <SideDrawerButton />
-      <span class="ml-2 text-2xl">Checklists</span>
-    </div>
+  <TopNavbar sideDrawer>Checklists</TopNavbar>
 
+  <div :class="{ 'mx-auto max-w-6xl': !settings.expandFull }">
     <div class="flex flex-col gap-3">
+      <div
+        v-if="checklistStore.checklistsArray.length === 0"
+        class="flex h-[50vh] flex-col items-center justify-center text-2xl font-thin"
+      >
+        <p>Click <span class="px-2 text-3xl">+</span> to create a checklist</p>
+      </div>
+
       <!-- @todo sort by last editted first -->
       <router-link
         v-for="checklist in checklistStore.checklists"
@@ -45,7 +49,10 @@ async function deleteChecklist(checklistID: ChecklistID) {
         <div class="rounded-lg border border-zinc-200 p-3">
           <div class="flex flex-row items-center justify-between">
             <p class="text-lg">{{ checklist.name }}</p>
-            <button @click.prevent="deleteChecklist(checklist.id)">
+            <button
+              class="rounded-lg border border-zinc-200 px-1 font-thin"
+              @click.prevent="deleteChecklist(checklist.id)"
+            >
               delete
             </button>
           </div>

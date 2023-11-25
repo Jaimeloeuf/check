@@ -22,15 +22,15 @@ const drawer = useSidedrawer();
   ></div>
 
   <nav
-    class="fixed left-0 top-0 z-40 h-screen max-w-xs -translate-x-full transition-transform"
+    class="fixed left-0 top-0 z-40 h-screen w-52 -translate-x-full transition-transform"
     :class="{ 'w-5/6 translate-x-0 shadow-2xl': drawer.showDrawer }"
   >
     <div class="flex h-full flex-col items-start justify-between bg-white p-4">
-      <button class="w-full border-b border-zinc-200 py-4" @click="drawer.hide">
-        <span class="text-2xl">Check</span>
+      <button class="w-full border-b border-zinc-200 py-2" @click="drawer.hide">
+        <img src="../../assets/logo.svg" class="h-6" />
       </button>
 
-      <div class="w-full pt-2">
+      <div class="w-full pt-4">
         <router-link
           :to="{ name: AllChecklistRoute.name }"
           class="group flex w-full rounded-lg p-2 text-zinc-900"
@@ -72,10 +72,7 @@ const drawer = useSidedrawer();
           }"
           @click="drawer.hide"
         >
-          <img
-            src="../../assets/SideDrawerIcon/Checklist.svg"
-            class="h-6 w-6"
-          />
+          <img src="../../assets/SideDrawerIcon/Backup.svg" class="h-6 w-6" />
           <span class="ml-3 flex-1 text-left">Backup</span>
         </router-link>
 
@@ -89,8 +86,8 @@ const drawer = useSidedrawer();
           @click="drawer.hide"
         >
           <img
-            src="../../assets/SideDrawerIcon/Checklist.svg"
-            class="h-6 w-6"
+            src="../../assets/SideDrawerIcon/Backup.svg"
+            class="h-6 w-6 rotate-90"
           />
           <span class="ml-3 flex-1 text-left">Import</span>
         </router-link>

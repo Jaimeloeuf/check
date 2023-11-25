@@ -20,6 +20,12 @@ interface State {
 export const useGroup = defineStore("group", {
   state: (): State => ({ groups: {} }),
 
+  getters: {
+    groupsArray: (state) => {
+      return Object.values(state.groups);
+    },
+  },
+
   actions: {
     async create(): Promise<GroupID> {
       const id = ulid();

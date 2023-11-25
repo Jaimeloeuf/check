@@ -131,13 +131,20 @@ async function allDone() {
       </button>
     </div>
 
+    <div
+      v-if="checklist.items.length === 0"
+      class="flex h-[50vh] flex-col items-center justify-center text-2xl font-thin"
+    >
+      <p>Click <span class="px-2 text-3xl">+</span> to add a task</p>
+    </div>
+
     <draggable v-model="checklist.items" group="checklist" item-key="id">
       <template #item="{ element: item, index }">
         <div class="pb-3">
           <div
-            class="rounded-lg border border-zinc-200 p-3"
+            class="rounded-lg border border-zinc-200 p-3 font-light"
             :class="{
-              'cursor-pointer bg-zinc-100 font-light text-zinc-700': item.done,
+              'cursor-pointer bg-zinc-100': item.done,
             }"
             v-on="{ click: item.done ? () => toggleItem(index) : null }"
           >
@@ -154,8 +161,14 @@ async function allDone() {
                 @keydown.backspace="($event) => deleteIfEmpty(index, $event)"
                 :readonly="item.done"
               />
-              <button @click.prevent="toggleItem(index)">
-                {{ item.done ? "undo" : "done" }}
+
+              <img v-if="item.done" src="../../assets/tick.svg" class="h-6" />
+              <button
+                v-else
+                class="rounded-lg border border-zinc-200 px-1 font-thin"
+                @click.prevent="toggleItem(index)"
+              >
+                done
               </button>
             </div>
           </div>

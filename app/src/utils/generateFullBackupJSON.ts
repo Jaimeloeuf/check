@@ -13,8 +13,8 @@ export function generateFullBackupJSON() {
 
   // Reset all the checklist items before converting it to json.
   return JSON.stringify(
-    Object.entries(checklistStore.checklists)
-      .map(([_, checklist]) => ({
+    checklistStore.checklistsArray
+      .map((checklist) => ({
         id: checklist.id,
         name: checklist.name,
         // Create a new items array without the current done status.

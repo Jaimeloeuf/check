@@ -76,6 +76,16 @@ async function removeChecklist(checklistID: ChecklistID) {
       </button>
     </div>
 
+    <div
+      v-if="group.checklists.length === 0"
+      class="flex h-[50vh] flex-col items-center justify-center text-2xl font-thin"
+    >
+      <p>
+        Click <span class="px-2 font-extralight">edit</span> to add checklists
+      </p>
+    </div>
+
+    <!-- If the checklist in group does not exists, then ignore it -->
     <draggable v-model="group.checklists" group="group" item-key="id">
       <template #item="{ element: checklistID, index }">
         <router-link
@@ -89,7 +99,10 @@ async function removeChecklist(checklistID: ChecklistID) {
               <GroupChecklistNameCard :checklistID="checklistID" />
             </p>
 
-            <button @click.prevent="removeChecklist(checklistID)">
+            <button
+              class="rounded-lg border border-zinc-200 px-1 font-thin"
+              @click.prevent="removeChecklist(checklistID)"
+            >
               remove
             </button>
           </div>
