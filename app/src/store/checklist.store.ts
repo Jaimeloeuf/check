@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import { ulid } from "ulid";
 
+import { useGroup } from "./group.store";
+
 import type { Checklist, ChecklistID } from "../types";
 
 /**
@@ -48,6 +50,9 @@ export const useChecklist = defineStore("checklist", {
       if (this.checklists[checklistID] === undefined) {
         throw new Error(`Checklist ${checklistID} does not exist.`);
       } else {
+        // Remove checklist from groups before removing it locally
+        const groupStore = useGroup();
+        await groupStore.removeChecklist(checklistID);
         delete this.checklists[checklistID];
       }
     },

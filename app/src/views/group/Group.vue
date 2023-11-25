@@ -85,8 +85,13 @@ async function removeChecklist(checklistID: ChecklistID) {
       </p>
     </div>
 
-    <!-- If the checklist in group does not exists, then ignore it -->
-    <draggable v-model="group.checklists" group="group" item-key="id">
+    <draggable
+      v-model="group.checklists"
+      handle=".drag-handle"
+      ghost-class="bg-zinc-100"
+      group="group"
+      item-key="id"
+    >
       <template #item="{ element: checklistID, index }">
         <router-link
           :to="{ name: ChecklistRoute.name, params: { checklistID } }"
@@ -95,7 +100,9 @@ async function removeChecklist(checklistID: ChecklistID) {
             class="flex flex-row items-center justify-between rounded-lg border border-zinc-200 p-3"
           >
             <p>
-              <span class="pr-2">{{ index + 1 }}.</span>
+              <span class="drag-handle cursor-pointer pr-2">
+                {{ index + 1 }}.
+              </span>
               <GroupChecklistNameCard :checklistID="checklistID" />
             </p>
 

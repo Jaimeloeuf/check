@@ -8,6 +8,7 @@ import {
   SettingsRoute,
 } from "../../router";
 import { useSidedrawer } from "../../store";
+import HelpButton from "./HelpButton.vue";
 
 const route = useRoute();
 const drawer = useSidedrawer();
@@ -28,6 +29,7 @@ const drawer = useSidedrawer();
     <div class="flex h-full flex-col items-start justify-between bg-white p-4">
       <button class="w-full border-b border-zinc-200 py-2" @click="drawer.hide">
         <img src="../../assets/logo.svg" class="h-6" />
+        <p class="py-1 text-left font-semibold text-zinc-600">Public Beta</p>
       </button>
 
       <div class="w-full pt-4">
@@ -109,15 +111,7 @@ const drawer = useSidedrawer();
         <span class="ml-3 flex-1">Settings</span>
       </router-link>
 
-      <!-- @todo Create link -->
-      <a
-        class="flex w-full rounded-lg p-2 text-start text-zinc-800"
-        target="_blank"
-        @click="drawer.hide"
-      >
-        <img src="../../assets/SideDrawerIcon/Help.svg" class="h-6 w-6" />
-        <span class="ml-3 flex-1">Help me!</span>
-      </a>
+      <HelpButton />
     </div>
   </nav>
 </template>

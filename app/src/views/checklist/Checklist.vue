@@ -105,6 +105,7 @@ async function allDone() {
       <input
         v-model="checklist.name"
         onclick="this.select()"
+        @keydown.enter="createItem()"
         class="ml-3 flex-grow px-1 text-2xl focus:outline-none"
         v-focus-if-no-items
       />
@@ -138,7 +139,13 @@ async function allDone() {
       <p>Click <span class="px-2 text-3xl">+</span> to add a task</p>
     </div>
 
-    <draggable v-model="checklist.items" group="checklist" item-key="id">
+    <draggable
+      v-model="checklist.items"
+      handle=".drag-handle"
+      ghost-class="bg-zinc-100"
+      group="checklist"
+      item-key="id"
+    >
       <template #item="{ element: item, index }">
         <div class="pb-3">
           <div
@@ -149,7 +156,9 @@ async function allDone() {
             v-on="{ click: item.done ? () => toggleItem(index) : null }"
           >
             <div class="flex flex-row items-center justify-between">
-              <span class="pr-2">{{ index + 1 }}.</span>
+              <span class="drag-handle cursor-pointer pr-2">
+                {{ index + 1 }}.
+              </span>
 
               <!-- @todo make this into a text area that grows bigger as you type -->
               <input

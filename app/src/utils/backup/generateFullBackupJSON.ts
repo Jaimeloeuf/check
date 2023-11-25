@@ -1,19 +1,18 @@
-import { useChecklist } from "../store";
-import type { Checklist, ChecklistID } from "../types";
+import { useChecklist, useGroup } from "../../store";
+import type { Checklist, ChecklistID } from "../../types";
 
 /**
- * Generates JSON backup string after making sure only the schema is saved and
- * not the current checklist progress/status.
- *
- * @todo take a single checklist or a list of checklist, so we can backup
- * individual checklists
+ * Generates JSON backup string for all user data.
  */
 export function generateFullBackupJSON() {
   const checklistStore = useChecklist();
+  const groupStore = useGroup();
 
   // Reset all the checklist items before converting it to json.
-  return JSON.stringify(
-    checklistStore.checklistsArray
+  return JSON.stringify({
+    version: 1,
+
+    checklists: checklistStore.checklistsArray
       .map((checklist) => ({
         id: checklist.id,
         name: checklist.name,
@@ -25,6 +24,8 @@ export function generateFullBackupJSON() {
           (checklists[checklist.id] = checklist), checklists
         ),
         {} as Record<ChecklistID, Checklist>
-      )
-  );
+      ),
+
+    groups: groupStore.groups,
+  });
 }

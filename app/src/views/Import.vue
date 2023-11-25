@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { useNotif } from "../store";
+import { useChecklist, useGroup, useNotif } from "../store";
 import { AllChecklistRoute } from "../router";
 import TopNavbar from "./components/TopNavbar.vue";
-import { importJSONBackup } from "../utils/importJSONBackup";
+import { importJSONBackup } from "../utils/backup";
 
 const router = useRouter();
+const checklistStore = useChecklist();
+const groupStore = useGroup();
 const notif = useNotif();
 
 const localFile = ref<File | null>(null);
@@ -39,6 +41,11 @@ async function importBackup() {
   if (file === null) {
     console.error("Missing file to process");
     return;
+  }
+
+  if (replaceExistingChecklists.value) {
+    checklistStore.$reset();
+    groupStore.$reset();
   }
 
   importJSONBackup(await file.text());
@@ -99,13 +106,13 @@ async function importBackup() {
       <label class="flex flex-row items-start pb-8">
         <input type="checkbox" v-model="replaceExistingChecklists" />
         <p class="-mt-1.5 pl-2">
-          <span class="text-red-600">Delete existing checklists?</span><br />
-          Select this to delete existing checklists before importing.
+          <span class="text-red-600">Reset all local data?</span><br />
+          Select this to delete existing checklists and groups before importing.
         </p>
       </label>
 
       <button
-        class="w-full rounded-lg border border-zinc-200 p-3 text-green-700"
+        class="w-full rounded-lg border border-green-600 p-2 text-green-600"
         @click="importBackup"
       >
         Import backup file

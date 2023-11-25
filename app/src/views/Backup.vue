@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import TopNavbar from "./components/TopNavbar.vue";
-import { generateFullBackupJSON } from "../utils/generateFullBackupJSON";
+import { generateFullBackupJSON } from "../utils/backup";
 import { downloadFile } from "../utils/downloadFile";
 
 async function backup() {

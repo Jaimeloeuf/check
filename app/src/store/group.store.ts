@@ -68,6 +68,16 @@ export const useGroup = defineStore("group", {
       if (checklistIndex === -1) group.checklists.push(checklistID);
       else group.checklists.splice(checklistIndex, 1);
     },
+
+    /**
+     * Remove a checklist from all groups before it is deleted.
+     */
+    async removeChecklist(checklistID: ChecklistID): Promise<void> {
+      for (const group of Object.values(this.groups)) {
+        const checklistIndex = group.checklists.indexOf(checklistID);
+        if (checklistIndex !== -1) group.checklists.splice(checklistIndex, 1);
+      }
+    },
   },
 
   persist: true,
