@@ -12,6 +12,8 @@ import HelpButton from "./HelpButton.vue";
 
 const route = useRoute();
 const drawer = useSidedrawer();
+
+const feedbackLink = import.meta.env.VITE_FEEDBACK_LINK;
 </script>
 
 <template>
@@ -110,6 +112,18 @@ const drawer = useSidedrawer();
         <img src="../../assets/SideDrawerIcon/Settings.svg" class="h-6 w-6" />
         <span class="ml-3 flex-1">Settings</span>
       </router-link>
+
+      <a
+        :href="feedbackLink"
+        target="_blank"
+        class="flex w-full rounded-lg p-2 text-start text-zinc-900"
+      >
+        <img
+          src="../../assets/SideDrawerIcon/FeedbackForm.svg"
+          class="h-5 w-5 pl-0.5"
+        />
+        <span class="ml-4 flex-1">Feedback</span>
+      </a>
 
       <HelpButton />
     </div>
