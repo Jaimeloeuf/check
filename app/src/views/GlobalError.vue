@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { AllChecklistRoute } from "../router";
 defineProps<{ globalError: Error }>();
+defineEmits(["acknowledged"]);
 </script>
 
 <template>
@@ -25,16 +27,18 @@ defineProps<{ globalError: Error }>();
       <a
         href=""
         class="w-full rounded-lg border border-zinc-200 bg-zinc-50 px-2 py-2 text-xl text-zinc-800"
+        @click="$emit('acknowledged')"
       >
         Report 💛
       </a>
 
-      <!-- <a
-        href="https://thepmftool.com"
+      <router-link
+        :to="{ name: AllChecklistRoute.name }"
         class="w-full rounded-lg border border-zinc-200 bg-zinc-50 px-2 py-2 text-xl text-zinc-800"
+        @click="$emit('acknowledged')"
       >
         Home
-      </a> -->
+      </router-link>
     </div>
 
     <div class="text-left">

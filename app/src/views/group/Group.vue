@@ -5,7 +5,7 @@ import draggable from "vuedraggable";
 import { useGroup, useSettings, useLoader } from "../../store";
 import {
   AllGroupRoute,
-  ChecklistRoute,
+  LocalChecklistRoute,
   GroupChecklistPickerRoute,
 } from "../../router";
 import GroupChecklistNameCard from "./GroupChecklistNameCard.vue";
@@ -94,7 +94,7 @@ async function removeChecklist(checklistID: ChecklistID) {
     >
       <template #item="{ element: checklistID, index }">
         <router-link
-          :to="{ name: ChecklistRoute.name, params: { checklistID } }"
+          :to="{ name: LocalChecklistRoute.name, params: { checklistID } }"
         >
           <div
             class="flex flex-row items-center justify-between rounded-lg border border-zinc-200 p-3"

@@ -5,16 +5,17 @@ import draggable from "vuedraggable";
 import { useChecklist, useSettings, useLoader } from "../../store";
 import { AllChecklistRoute } from "../../router";
 import BackButton from "../components/BackButton.vue";
-import type { ChecklistID } from "../../types";
+import { downloadFile } from "../../utils/downloadFile";
+import type { Checklist } from "../../types";
 
-const props = defineProps<{ checklistID: ChecklistID }>();
+const props = defineProps<{ type: "local" | "hosted"; checklist: Checklist }>();
 
 const router = useRouter();
 const checklistStore = useChecklist();
 const settings = useSettings();
 const loader = useLoader();
 
-const checklist = await checklistStore.get(props.checklistID);
+const checklist = props.checklist;
 
 const itemElements = ref<Array<HTMLInputElement>>([]);
 
@@ -31,10 +32,25 @@ const vFocusIfNoItems = {
   },
 };
 
+async function exportChecklist() {
+  downloadFile(
+    `${checklist.name} checklist.json`,
+    JSON.stringify(
+      {
+        type: "checklist",
+        version: 1,
+        checklist: checklist,
+      },
+      null,
+      2
+    )
+  );
+}
+
 async function deleteChecklist() {
   if (!confirm("Delete?")) return;
   loader.show();
-  await checklistStore.delete(props.checklistID);
+  await checklistStore.delete(checklist.id);
   router.push({ name: AllChecklistRoute.name });
   loader.hide();
 }
@@ -118,10 +134,18 @@ async function allDone() {
       </p>
 
       <button
+        v-if="type === 'local'"
         class="mr-3 rounded-lg border border-red-300 p-1 text-red-400"
         @click="deleteChecklist()"
       >
         delete
+      </button>
+
+      <button
+        class="mr-3 rounded-lg border border-zinc-200 p-1 text-zinc-600"
+        @click="exportChecklist()"
+      >
+        export
       </button>
 
       <button

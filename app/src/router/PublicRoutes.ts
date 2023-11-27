@@ -22,11 +22,18 @@ export const AllChecklistRoute = <const>{
   component: () => import("../views/checklist/AllChecklist.vue"),
 };
 
-export const ChecklistRoute = <const>{
-  name: "checklist",
+export const LocalChecklistRoute = <const>{
+  name: "checklist-local",
   path: "/checklist/view/:checklistID",
   props: true,
-  component: () => import("../views/checklist/Checklist.vue"),
+  component: () => import("../views/checklist/LocalChecklist.vue"),
+};
+
+export const HostedChecklistRoute = <const>{
+  name: "checklist-hosted",
+  path: "/checklist/hosted/:link",
+  props: true,
+  component: () => import("../views/checklist/HostedChecklist.vue"),
 };
 
 export const AllGroupRoute = <const>{

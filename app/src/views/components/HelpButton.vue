@@ -30,7 +30,6 @@ const showModal = ref(false);
 
   <button
     class="flex w-full rounded-lg p-2 text-start text-zinc-800"
-    target="_blank"
     @click="showModal = true"
   >
     <img src="../../assets/SideDrawerIcon/Help.svg" class="h-6 w-6" />

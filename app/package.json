@@ -13,6 +13,7 @@
     "build:full": "npm run typecheck && npm run build:delete && npm run build"
   },
   "dependencies": {
+    "fuse.js": "^7.0.0",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.0",
     "simpler-fetch": "^10.3.1",

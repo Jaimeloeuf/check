@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useChecklist, useSettings, useLoader } from "../../store";
-import { ChecklistRoute } from "../../router";
+import { LocalChecklistRoute } from "../../router";
+import { useSearch } from "../../composable";
 import TopNavbar from "../components/TopNavbar.vue";
+import OpenHostedChecklistButton from "./OpenHostedChecklistButton.vue";
 import type { ChecklistID } from "../../types";
 
 const router = useRouter();
@@ -10,10 +13,19 @@ const checklistStore = useChecklist();
 const settings = useSettings();
 const loader = useLoader();
 
+/** Ref to the DOM element so that it can be cleared by `clearSearchInputHandler` */
+const searchField = ref<HTMLInputElement | null>(null);
+
+const { searchInput, results, clearSearchInput } = useSearch(
+  ref(checklistStore.checklistsArray),
+  { keys: ["name"], threshold: 0.5, resultLimit: 5 },
+  () => searchField.value?.focus()
+);
+
 async function create() {
   loader.show();
   const id = await checklistStore.create();
-  router.push({ name: ChecklistRoute.name, params: { checklistID: id } });
+  router.push({ name: LocalChecklistRoute.name, params: { checklistID: id } });
   loader.hide();
 }
 
@@ -29,20 +41,42 @@ async function deleteChecklist(checklistID: ChecklistID) {
   <TopNavbar sideDrawer>Checklists</TopNavbar>
 
   <div :class="{ 'mx-auto max-w-6xl': !settings.expandFull }">
-    <div class="flex flex-col gap-3">
-      <div
-        v-if="checklistStore.checklistsArray.length === 0"
-        class="flex h-[50vh] flex-col items-center justify-center text-2xl font-thin"
-      >
-        <p>Click <span class="px-2 text-3xl">+</span> to create a checklist</p>
+    <div
+      v-if="checklistStore.checklistsArray.length === 0"
+      class="flex h-[60vh] flex-col items-center justify-center text-2xl font-thin"
+    >
+      <p>Click <span class="px-2 text-3xl">+</span> to create a checklist</p>
+    </div>
+
+    <div v-else class="flex flex-col gap-3">
+      <div class="w-full max-w-md pb-3">
+        <p class="font-thin">Search</p>
+        <div class="flex max-w-md flex-row gap-3">
+          <input
+            ref="searchField"
+            v-model.trim="searchInput"
+            type="text"
+            class="w-full rounded-lg border border-zinc-200 p-2 text-sm focus:outline-none"
+            :placeholder="`E.g. ${
+              checklistStore.checklistsArray[0]?.name ?? 'My Checklist'
+            }`"
+          />
+
+          <button
+            class="rounded-lg bg-zinc-100 px-4 text-sm font-light text-zinc-900"
+            @click="clearSearchInput"
+          >
+            clear
+          </button>
+        </div>
       </div>
 
       <!-- @todo sort by last editted first -->
       <router-link
-        v-for="checklist in checklistStore.checklists"
+        v-for="checklist in results"
         :key="checklist.id"
         :to="{
-          name: ChecklistRoute.name,
+          name: LocalChecklistRoute.name,
           params: { checklistID: checklist.id },
         }"
       >
@@ -62,6 +96,8 @@ async function deleteChecklist(checklistID: ChecklistID) {
 
     <!-- To allow scrolling past the FAB -->
     <div class="pt-20"></div>
+
+    <OpenHostedChecklistButton />
 
     <button
       class="fixed bottom-10 right-10 z-30 h-14 w-14 rounded-full border border-zinc-200 bg-white p-0 shadow-lg"

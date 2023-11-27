@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { ulid } from "ulid";
+import { sf } from "simpler-fetch";
 
 import { useGroup } from "./group.store";
 
@@ -44,6 +45,20 @@ export const useChecklist = defineStore("checklist", {
       }
 
       return checklist;
+    },
+
+    async getFromLink(link: string): Promise<Checklist> {
+      const { err, res } = await sf.useOnce(link).GET().runJSON<{
+        type: "checklist";
+        version: 1;
+        checklist: Checklist;
+      }>();
+      // @todo Do zod validation here
+
+      if (err) throw new Error("Failed to fetch checklist");
+      if (!res.ok) throw new Error("Failed to fetch checklist");
+
+      return res.data.checklist;
     },
 
     async delete(checklistID: ChecklistID): Promise<void> {
