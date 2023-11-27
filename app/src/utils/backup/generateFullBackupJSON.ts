@@ -10,6 +10,7 @@ export function generateFullBackupJSON() {
 
   // Reset all the checklist items before converting it to json.
   return JSON.stringify({
+    type: "full",
     version: 1,
 
     checklists: checklistStore.checklistsArray
